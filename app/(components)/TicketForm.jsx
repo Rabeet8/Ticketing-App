@@ -5,41 +5,45 @@ import React, { useState } from "react";
 
 const TicketForm = () => {
 
-const router = useRouter();
+    const router = useRouter();
 
-  const handleChange =  (e) => {
-    const value = e.target.value;
-    const name = e.target.name;
-
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
     const startingTicketData = {
       title: "",
-      descrition: "",
+      description: "",
       priority: 1,
       progress: 0,
       status: "not started",
       category: "Hardware Problem",
     };
-
-     const handleSubmit = async(e) => {
-      e.preventDefault();
-      const res = await fetch("api/Tickets",{
-      method : "POST",
-      body: JSON.stringify({formData}),
-      "content-type": "application/json"
-    });
-
-    if(!res.ok){
-        throw new Error ("Failed to create Ticket.")
-    }
-router.refresh()
-router.push("/")
-
-     }    
+  
     const [formData, setFormData] = useState(startingTicketData);
+  
+    const handleChange = (e) => {
+      const { value, name } = e.target;
+      setFormData((prevState) => ({
+        ...prevState,
+        [name]: value,
+      }));
+    };
+  
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+      const res = await fetch("api/Tickets", {
+        method: "POST",
+        body: JSON.stringify({ formData }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+  
+      if (!res.ok) {
+        throw new Error("Failed to create Ticket.");
+      }
+      router.refresh();
+      router.push("/");
+    };
+  
+    
 
     return (
       <div className="flex justify-center ">
@@ -148,5 +152,5 @@ router.push("/")
       </div>
     );
   };
-};
+
 export default TicketForm;
