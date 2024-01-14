@@ -19,25 +19,27 @@ const TicketForm = () => {
     const [formData, setFormData] = useState(startingTicketData);
   
     const handleChange = (e) => {
-      const { value, name } = e.target;
-      setFormData((prevState) => ({
-        ...prevState,
+      
+      const value = e.target.value;
+      const name = e.target.name;
+  
+      setFormData((preState) => ({
+        ...preState,
         [name]: value,
       }));
     };
   
+  
     const handleSubmit = async (e) => {
       e.preventDefault();
-      const res = await fetch("api/Tickets", {
+      const res = await fetch("/api/Tickets", {
         method: "POST",
         body: JSON.stringify({ formData }),
-        headers: {
-          "Content-Type": "application/json",
-        },
+        
+        "Content-Type": "application/json",
       });
-  
       if (!res.ok) {
-        throw new Error("Failed to create Ticket.");
+        throw new Error("Failed to create ticket");
       }
       router.refresh();
       router.push("/");
@@ -68,7 +70,7 @@ const TicketForm = () => {
             name="description"
             onChange={handleChange}
             required={true}
-            value={formData.title}
+            value={formData.description}
             rows="5"
           />
 
